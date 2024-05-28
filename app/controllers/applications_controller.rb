@@ -16,13 +16,13 @@ class ApplicationsController < ApplicationController
   # POST /applications
   def create
     token = SecureRandom.hex(10)
-    CreateApplicationJob.perform_async(token, name)
+    CreateApplicationJob.perform_async(token, params[:name])
     render json: token, status: :created
   end
 
   # PATCH/PUT /applications/:token
   def update
-    UpdateApplicationJob.perform_async(token, name)
+    UpdateApplicationJob.perform_async(token, params[:name])
     render json: "Application updated successfully", status: :ok
   end
 
