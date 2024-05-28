@@ -1,5 +1,4 @@
-require 'elasticsearch/model'
-require 'dotenv/load'
+# Initialize Elasticsearch client with specified URL or default to localhost:9200
+elasticsearch_url = 'http://localhost:9200' # Default URL
 
-# Initialize Elasticsearch client with URL from .env file or default to localhost:9200
-Elasticsearch::Model.client = Elasticsearch::Client.new(url: ENV['ELASTICSEARCH_URL'] || 'http://localhost:9200')
+Elasticsearch::Model.client = Elasticsearch::Client.new(url: elasticsearch_url)
