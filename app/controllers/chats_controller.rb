@@ -41,7 +41,7 @@ class ChatsController < ApplicationController
   end
 
   def set_chat
-    @chat = @application.chats.find_by(number: params[:number])
+    @chat = @application.chats.find_by(number: params[:number]) if @application
     render json: { error: 'Chat not found' }, status: :not_found unless @chat
   end
 

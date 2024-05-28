@@ -24,7 +24,7 @@ class MessagesController < ApplicationController
       params[:message]
     ]
     CreateMessageJob.perform_async(msg)
-    render json: { message: 'Message created' }, :except=> [:id, :chat_id], status: :created
+    render json: { message: 'Message created check' }, :except=> [:id, :chat_id], status: :created
   end
 
   # PATCH/PUT /applications/:application_token/chats/:chat_number/messages/:message_number
@@ -73,6 +73,11 @@ class MessagesController < ApplicationController
     @message = @chat.messages.find_by(number: params[:message_number]) if @chat
     render json: { error: 'Message not found' }, status: :not_found unless @message
   end
+  
+  # Only allow a trusted parameter "white list" through.
+  def message_params
+    params.require(:message).permit(:body)
+  end
 
   def get_next_number
     key = "#{params[:application_token]}_next_message_number"
@@ -85,9 +90,4 @@ class MessagesController < ApplicationController
     return output
   end
 
-
-  # Only allow a trusted parameter "white list" through.
-  def message_params
-    params.require(:message).permit(:body)
-  end
 end
