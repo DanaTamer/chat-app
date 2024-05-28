@@ -15,8 +15,9 @@ class ApplicationsController < ApplicationController
 
   # POST /applications
   def create
-    CreateApplicationJob.perform_async(token, name)
-    render json: token, status: :created
+    token = SecureRandom.hex(10)
+    CreateApplicationJob.perform_async(@application.token, name)
+    render json: @application.token, status: :created
   end
 
   # PATCH/PUT /applications/:token
