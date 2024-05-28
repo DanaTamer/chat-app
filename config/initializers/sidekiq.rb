@@ -1,14 +1,9 @@
-require 'redis'
+sidekiq_config = { url: "redis://#{ENV['REDIS_HOST']}:#{ENV['REDIS_PORT']}" }
 
-# Specify the Redis host and port directly here
-REDIS_HOST = 'redis'
-REDIS_PORT = 6379
+Sidekiq.configure_server do |config|
+    config.redis = sidekiq_config
+end
 
-redis_config = { url: "redis://#{REDIS_HOST}:#{REDIS_PORT}" }
-
-begin
-    $redis = Redis.new(redis_config)
-    $red_lock = Redlock::Client.new(["redis://#{REDIS_HOST}:#{REDIS_PORT}/1"])
-rescue Exception => e
-    puts e
+Sidekiq.configure_client do |config|
+    config.redis = sidekiq_config
 end

@@ -1,14 +1,14 @@
 require 'redis'
 
-# Specify the Redis host and port directly here
-REDIS_HOST = 'redis'
-REDIS_PORT = 6379
-
-redis_config = { url: "redis://#{REDIS_HOST}:#{REDIS_PORT}" }
+redis_config = { url: ENV.fetch("REDIS_URL") { "redis://localhost:6379" } }
+begin
+  $redis = Redis.new(redis_config)
+rescue Exception => e
+  puts e
+end
 
 begin
-    $redis = Redis.new(redis_config)
-    $red_lock = Redlock::Client.new(["redis://#{REDIS_HOST}:#{REDIS_PORT}/1"])
+  $redis_lock = Redlock::Client.new([ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" }])
 rescue Exception => e
-    puts e
+  puts e
 end

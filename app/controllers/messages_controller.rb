@@ -32,7 +32,7 @@ class MessagesController < ApplicationController
     msg = [
       params[:application_token],
       params[:chat_number],
-      message_number,
+      params[:message_number],
       params[:message]
     ]
     UpdateMessageJob.perform_async(msg)
@@ -84,7 +84,7 @@ class MessagesController < ApplicationController
     output = $redis.get(key).to_i
     loop do
       new_value = output + 1
-      break if $redis.compare_and_swap(key, output, new_value)
+      break if $redis.set(key, new_value)
       output = $redis.get(key).to_i
     end
     return output

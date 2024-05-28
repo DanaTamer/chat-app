@@ -7,7 +7,7 @@ class CreateChatJob
     @chat = @application.chats.new(number: number)  
     @application.with_lock do
       @application.increment!(:chats_count)
-      @chat.save!
+      @application.save!
     end
   end
 end

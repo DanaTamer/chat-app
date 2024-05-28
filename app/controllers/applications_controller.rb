@@ -22,7 +22,7 @@ class ApplicationsController < ApplicationController
 
   # PATCH/PUT /applications/:token
   def update
-    UpdateApplicationJob.perform_async(token, params[:name])
+    UpdateApplicationJob.perform_async(params[:token], params[:name])
     render json: "Application updated successfully", status: :ok
   end
 
