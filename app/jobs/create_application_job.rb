@@ -3,7 +3,7 @@ class CreateApplicationJob
 
   def perform(token, name)
     @application = Application.new(token: token, name: name)
-    @application.with_lock
+    @application.with_lock do
       @application.save
     end
     $redis.set("#{token}_next_chat_number", 1)

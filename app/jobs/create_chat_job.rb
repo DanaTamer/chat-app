@@ -9,6 +9,9 @@ class CreateChatJob
       @application.increment!(:chats_count)
       @application.save!
     end
+    @chat.with_lock do
+      @chat.save
+    end
   end
 end
   
